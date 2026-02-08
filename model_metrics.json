@@ -7,19 +7,141 @@
   "training_epochs": 20,
   "batch_size": 32,
   "optimizer": "Adam",
-  "learning_rates": [
-    0.001,
-    0.0001
-  ],
-  "dataset_size": 27900,
+  "learning_rates": [0.001, 0.0001],
+  "framework": "TensorFlow/Keras",
+  "deployment_format": "ONNX (opset 13)",
+  
+  "dataset": {
+    "total_images": 27900,
+    "num_classes": 8,
+    "train_val_test_split": "80/10/10",
+    "image_type": "Semiconductor microscopy images (SEM/AFM)",
+    "labeling_method": "CLIP-based zero-shot classification",
+    "input_size": "224x224x3"
+  },
+  
   "class_distribution": {
     "LER": 18865,
-    "CMP_Scratches": 3197,
-    "Cracks": 324,
-    "Opens": 1639,
     "Bridges": 24952,
+    "CMP_Scratches": 3197,
+    "Opens": 1639,
+    "Cracks": 324,
+    "Others": 47,
     "Clean": 24,
-    "Malformed_Vias": 1,
-    "Others": 47
+    "Malformed_Vias": 1
+  },
+  
+  "class_balance_strategy": {
+    "method": "Balanced class weights",
+    "implementation": "sklearn.utils.class_weight.compute_class_weight with 'balanced' strategy",
+    "applied_during": "Training loss computation",
+    "note": "Weights inversely proportional to class frequencies to handle severe imbalance"
+  },
+  
+  "training_approach": {
+    "phase_1": {
+      "description": "Frozen base model",
+      "epochs": 10,
+      "learning_rate": 0.001,
+      "trainable_layers": "Classification head only"
+    },
+    "phase_2": {
+      "description": "Fine-tuning all layers",
+      "epochs": 10,
+      "learning_rate": 0.0001,
+      "trainable_layers": "All (end-to-end)"
+    }
+  },
+  
+  "data_augmentation": {
+    "rotation_range": 20,
+    "width_shift_range": 0.2,
+    "height_shift_range": 0.2,
+    "horizontal_flip": true,
+    "vertical_flip": true,
+    "zoom_range": 0.2
+  },
+  
+  "performance_metrics": {
+    "test_accuracy": 69.93,
+    "test_loss": 1.1164,
+    "validation_accuracy_peak": 71.40,
+    "per_class_performance": {
+      "LER": {
+        "precision": 0.93,
+        "recall": 0.74,
+        "f1_score": 0.82,
+        "support": 2343
+      },
+      "CMP_Scratches": {
+        "precision": 0.31,
+        "recall": 0.50,
+        "f1_score": 0.38,
+        "support": 413
+      },
+      "Bridges": {
+        "precision": 0.06,
+        "recall": 0.50,
+        "f1_score": 0.11,
+        "support": 2
+      },
+      "Cracks": {
+        "precision": 0.03,
+        "recall": 0.24,
+        "f1_score": 0.05,
+        "support": 17
+      },
+      "Clean": {
+        "precision": 0.02,
+        "recall": 0.33,
+        "f1_score": 0.04,
+        "support": 3
+      },
+      "Opens": {
+        "precision": 0.07,
+        "recall": 0.50,
+        "f1_score": 0.13,
+        "support": 6
+      },
+      "Others": {
+        "precision": 0.13,
+        "recall": 0.40,
+        "f1_score": 0.20,
+        "support": 5
+      },
+      "Malformed_Vias": {
+        "precision": 0.00,
+        "recall": 0.00,
+        "f1_score": 0.00,
+        "support": 1
+      }
+    }
+  },
+  
+  "edge_deployment": {
+    "format": "ONNX",
+    "model_size_mb": 9.11,
+    "inference_time_ms": 95,
+    "target_hardware": "NXP eIQ platform",
+    "meets_requirements": {
+      "size_under_15mb": true,
+      "inference_under_100ms": true
+    }
+  },
+  
+  "challenges_and_solutions": {
+    "challenge_1": {
+      "problem": "Severe class imbalance (LER: 67%, Clean: <1%)",
+      "solution": "Implemented balanced class weights in loss function"
+    },
+    "challenge_2": {
+      "problem": "No pre-labeled dataset (27,900 raw images)",
+      "solution": "Used OpenAI CLIP for zero-shot classification with confidence thresholds"
+    },
+    "challenge_3": {
+      "problem": "Limited compute resources (free Colab GPU timeout)",
+      "solution": "2-phase training strategy with auto-save checkpoints"
+    }
   }
 }
+`
