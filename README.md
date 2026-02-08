@@ -70,6 +70,11 @@ Others             0.13       0.40    0.20      5
 
 **Overall Accuracy**: 69.93%
 
+## 📺 Demo Video
+To see the semiconductor defect detection system in action, watch our demonstration video:
+[Watch the Demonstration Video Here](./demo/iesa_demo.mp4) 
+[View Dataset on Google Drive](https://drive.google.com/file/d/1qByS3AvmUSoQKtkTevO7nTg5aLYHIlcC/view?usp=sharing)
+
 ## Repository Structure
 ```
 ├── iesa_model.onnx          # Trained ONNX model
