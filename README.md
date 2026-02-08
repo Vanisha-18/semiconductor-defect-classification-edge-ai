@@ -40,6 +40,9 @@ Edge AI-based defect classification system for semiconductor wafer/die images
 - Optimizer: Adam (lr=0.0001)
 - Unfroze all layers for end-to-end training
 
+### Code Structure:
+- Codebase is modularized for clarity: Use train.py to replicate our results and inference.py to deploy the model on your local environment.
+
 ## Key Features
 - **Class Imbalance Handling**: Implemented balanced class weights
 - **Data Augmentation**: Rotation, shifts, flips, zoom
