@@ -1,0 +1,25 @@
+{
+  "test_accuracy": 69.93,
+  "model_architecture": "MobileNetV2 + Custom Head",
+  "total_parameters": 2422984,
+  "model_size_mb": 9.11,
+  "inference_time_ms": "90-110",
+  "training_epochs": 20,
+  "batch_size": 32,
+  "optimizer": "Adam",
+  "learning_rates": [
+    0.001,
+    0.0001
+  ],
+  "dataset_size": 27900,
+  "class_distribution": {
+    "LER": 18865,
+    "CMP_Scratches": 3197,
+    "Cracks": 324,
+    "Opens": 1639,
+    "Bridges": 24952,
+    "Clean": 24,
+    "Malformed_Vias": 1,
+    "Others": 47
+  }
+}
